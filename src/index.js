@@ -1,11 +1,11 @@
 /** @jsx torodom */
 
-function torodom(tag, props, ...children) {
+export function torodom(tag, props, ...children) {
   const childrenNodes = children.length ? [].concat(...children) : null;
   return { tag, props: props || {}, children: childrenNodes };
 }
 
-function render(node, component) {
+export function render(node, component) {
   const element = createElement(component);
   node.appendChild(element);
 }
@@ -26,6 +26,7 @@ function createElement(component) {
   const element = document.createElement(component.tag);
 
   setAttributes(element, component.props);
+  addEventListeners(element, component.props);
 
   component.children &&
     component.children
@@ -33,6 +34,19 @@ function createElement(component) {
       .forEach(child => element.appendChild(child));
 
   return element;
+}
+
+function addEventListeners(element, props) {
+  if (!props) return;
+  Object.keys(props)
+    .filter(isPropEvent)
+    .forEach(event =>
+      element.addEventListener(setEventName(event), props[event])
+    );
+}
+
+function setEventName(name) {
+  return name.toLowerCase().substring(2);
 }
 
 function setAttributes(element, props) {
@@ -53,7 +67,7 @@ function isPropEvent(name) {
   return /^on/.test(name);
 }
 
-function updateNode(parentNode, oldNode, newNode, index = 0) {
+export function updateNode(parentNode, oldNode, newNode, index = 0) {
   if (oldNode && typeof oldNode.tag === 'function') {
     oldNode = oldNode.tag(oldNode.props);
   }
@@ -95,11 +109,14 @@ function isDiferentNode(oldNode, newNode) {
 
 // The code below is just for testing purposes in the browser
 
-const root = document.getElementById('root');
+/* const root = document.getElementById('root');
 
 const App = () => (
   <div>
     <h1>This is TORODOM in the browser!</h1>
+    <p>
+      <strong>It works!</strong>
+    </p>
     <Button className='btn' text='Click Me!' />
   </div>
 );
@@ -113,3 +130,4 @@ const NewApp = () => (
 const Button = ({ text, ...props }) => <button {...props}>{text}</button>;
 
 render(root, <App />);
+  */

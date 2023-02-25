@@ -4,8 +4,8 @@
   "description": "This is a small VIRTUAL DOM representation with SWC for learning objectives",
   "main": "src/index.js",
   "scripts": {
-    "build": "npx swc src/index.js -d dist",
-    "dev": "npx swc src/index.js -d dist -w",
+    "build": "npx swc src/**.js -d dist",
+    "dev": "npx swc src/**.js -d dist -w",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
