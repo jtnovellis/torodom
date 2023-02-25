@@ -1,6 +1,6 @@
-/** @jsx jtn */
+/** @jsx torodom */
 
-import { jtn } from '../index.js';
+import { torodom } from '../index.js';
 
 describe('jtn', () => {
   it('Should to return a data structure like React.createElement', () => {

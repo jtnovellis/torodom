@@ -1,9 +1,9 @@
 /**
  * @jest-environment jsdom
- * @jsx jtn
+ * @jsx torodom
  */
 
-import { jtn, updateNode, render } from '../index.js';
+import { torodom, updateNode, render } from '../index.js';
 
 describe('updateNode', () => {
   let root;

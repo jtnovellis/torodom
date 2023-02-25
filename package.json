@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "npx swc src/index.js -d dist",
-    "dev": "npx swc src/index.js -d dist/src -w",
+    "dev": "npx swc src/index.js -d dist -w",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"

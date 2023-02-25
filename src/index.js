@@ -1,11 +1,11 @@
-/** @jsx jtn */
+/** @jsx torodom */
 
-export function jtn(tag, props, ...children) {
+function torodom(tag, props, ...children) {
   const childrenNodes = children.length ? [].concat(...children) : null;
   return { tag, props: props || {}, children: childrenNodes };
 }
 
-export function render(node, component) {
+function render(node, component) {
   const element = createElement(component);
   node.appendChild(element);
 }
@@ -37,16 +37,23 @@ function createElement(component) {
 
 function setAttributes(element, props) {
   if (!props) return;
-  Object.keys(props).forEach(key => {
-    if (key === 'className') {
-      element.setAttribute('class', props[key]);
-      return;
-    }
-    element.setAttribute(key, props[key]);
-  });
+  Object.keys(props)
+    .filter(prop => !isPropEvent(prop))
+    .forEach(key => setProp(element, key, props[key]));
 }
 
-export function updateNode(parentNode, oldNode, newNode, index = 0) {
+function setProp(element, name, value) {
+  if (name === 'className') {
+    name = 'class';
+  }
+  element.setAttribute(name, value);
+}
+
+function isPropEvent(name) {
+  return /^on/.test(name);
+}
+
+function updateNode(parentNode, oldNode, newNode, index = 0) {
   if (oldNode && typeof oldNode.tag === 'function') {
     oldNode = oldNode.tag(oldNode.props);
   }
@@ -85,3 +92,24 @@ function isDiferentNode(oldNode, newNode) {
     oldNode.tag !== newNode.tag
   );
 }
+
+// The code below is just for testing purposes in the browser
+
+const root = document.getElementById('root');
+
+const App = () => (
+  <div>
+    <h1>This is TORODOM in the browser!</h1>
+    <Button className='btn' text='Click Me!' />
+  </div>
+);
+const NewApp = () => (
+  <div>
+    <h1>This is TORODOM in the browser!</h1>
+    <Button className='btn' text='Click Me!' />
+  </div>
+);
+
+const Button = ({ text, ...props }) => <button {...props}>{text}</button>;
+
+render(root, <App />);
