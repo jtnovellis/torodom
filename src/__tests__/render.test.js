@@ -56,4 +56,12 @@ describe('render', () => {
       `<div><h1 class="title">Hello World</h1></div>`
     );
   });
+
+  it('Should to render a tag button with an event', () => {
+    const onClick = jest.fn();
+    const element = <button onClick={onClick}>Click me</button>;
+    render(root, element);
+    root.firstChild.click();
+    expect(onClick).toHaveBeenCalled();
+  });
 });
