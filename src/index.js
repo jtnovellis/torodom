@@ -45,3 +45,43 @@ function setAttributes(element, props) {
     element.setAttribute(key, props[key]);
   });
 }
+
+export function updateNode(parentNode, oldNode, newNode, index = 0) {
+  if (oldNode && typeof oldNode.tag === 'function') {
+    oldNode = oldNode.tag(oldNode.props);
+  }
+  if (newNode && typeof newNode.tag === 'function') {
+    newNode = newNode.tag(newNode.props);
+  }
+
+  if (!oldNode) {
+    parentNode.appendChild(createElement(newNode));
+  } else if (!newNode) {
+    parentNode.removeChild(parentNode.childNodes[index]);
+  } else if (newNode.tag) {
+    const newNodeLength = newNode.children ? newNode.children.length : 0;
+    const oldNodeLength = oldNode.children ? oldNode.children.length : 0;
+
+    for (let i = 0; i < newNodeLength || i < oldNodeLength; i++) {
+      updateNode(
+        parentNode.childNodes[index],
+        oldNode.children[i],
+        newNode.children[i],
+        i
+      );
+    }
+  } else if (isDiferentNode(oldNode, newNode)) {
+    parentNode.replaceChild(
+      createElement(newNode),
+      parentNode.childNodes[index]
+    );
+  }
+}
+
+function isDiferentNode(oldNode, newNode) {
+  return (
+    typeof oldNode !== typeof newNode ||
+    (typeof oldNode === 'string' && oldNode !== newNode) ||
+    oldNode.tag !== newNode.tag
+  );
+}
