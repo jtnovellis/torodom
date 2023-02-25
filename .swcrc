@@ -15,5 +15,5 @@
       "importMeta": false
     }
   },
-  "minify": false
+  "minify": true
 }

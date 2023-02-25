@@ -2,7 +2,7 @@
 
 export function jtn(tag, props, ...children) {
   const childrenNodes = children.length ? [].concat(...children) : null;
-  return { tag, props, children: childrenNodes };
+  return { tag, props: props || {}, children: childrenNodes };
 }
 
 export function render(node, component) {
@@ -10,7 +10,7 @@ export function render(node, component) {
   node.appendChild(element);
 }
 
-export function createElement(component) {
+function createElement(component) {
   if (typeof component === 'string') {
     return document.createTextNode(component);
   }
@@ -24,6 +24,14 @@ export function createElement(component) {
   }
 
   const element = document.createElement(component.tag);
+
+  Object.keys(component.props).forEach(key => {
+    if (key === 'className') {
+      element.setAttribute('class', component.props[key]);
+      return;
+    }
+    element.setAttribute(key, component.props[key]);
+  });
 
   component.children &&
     component.children
