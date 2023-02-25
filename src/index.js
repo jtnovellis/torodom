@@ -25,13 +25,7 @@ function createElement(component) {
 
   const element = document.createElement(component.tag);
 
-  Object.keys(component.props).forEach(key => {
-    if (key === 'className') {
-      element.setAttribute('class', component.props[key]);
-      return;
-    }
-    element.setAttribute(key, component.props[key]);
-  });
+  setAttributes(element, component.props);
 
   component.children &&
     component.children
@@ -39,4 +33,15 @@ function createElement(component) {
       .forEach(child => element.appendChild(child));
 
   return element;
+}
+
+function setAttributes(element, props) {
+  if (!props) return;
+  Object.keys(props).forEach(key => {
+    if (key === 'className') {
+      element.setAttribute('class', props[key]);
+      return;
+    }
+    element.setAttribute(key, props[key]);
+  });
 }

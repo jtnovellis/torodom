@@ -7,7 +7,8 @@
     "build": "npx swc src/index.js -d dist",
     "dev": "npx swc src/index.js -d dist/src -w",
     "test": "jest",
-    "coverage": "vitest run --coverage"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
